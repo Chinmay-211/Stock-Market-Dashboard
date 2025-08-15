@@ -1,0 +1,10 @@
+# .dockerignore
+
+# Ignore all node_modules folders
+**/node_modules
+
+# Ignore build output folders
+**/build
+
+# Ignore npm debug logs
+npm-debug.log*

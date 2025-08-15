@@ -1,0 +1,31 @@
+# Build the React application
+FROM node:18-alpine AS build
+
+WORKDIR /app
+
+# Add the node_modules/.bin directory to the PATH
+ENV PATH /app/node_modules/.bin:$PATH
+
+# Copy package files first
+COPY frontend/package.json frontend/package-lock.json ./
+
+# Install dependencies
+RUN npm ci
+
+# Copy the rest of the application
+COPY frontend/ .
+
+# Build the app
+RUN npm run build
+
+
+# Serve the application from Nginx
+FROM nginx:stable-alpine
+
+# Copy built files from build stage
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Expose port
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
