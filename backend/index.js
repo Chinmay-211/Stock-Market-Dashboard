@@ -103,6 +103,4 @@ app.get('/api/stock/:companyName', async (req, res) => {
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
-app.listen(PORT, () => {
-    console.log(`Backend server is running on http://localhost:${PORT}`);
-});
+module.exports = app;
