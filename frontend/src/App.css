@@ -1,0 +1,101 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  background-color: #f4f7f6;
+  color: #333;
+}
+
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #282c34;
+  padding: 20px;
+  color: white;
+  margin-bottom: 2rem;
+}
+
+.dashboard-container {
+  display: flex;
+  flex-direction: row;
+  height: calc(100vh - 130px);
+}
+
+.left-panel {
+  width: 250px;
+  border-right: 1px solid #ddd;
+  padding: 20px;
+  background-color: #fff;
+  overflow-y: auto;
+  text-align: left;
+}
+
+.left-panel h2 {
+  margin-top: 0;
+  border-bottom: 2px solid #282c34;
+  padding-bottom: 10px;
+}
+
+.company-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.company-list li {
+  padding: 15px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  transition: background-color 0.2s;
+}
+
+.company-list li:hover {
+  background-color: #e9ecef;
+}
+
+.main-panel {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.chart-container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.stock-info {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+}
+
+.stock-info span {
+  font-size: 1.1em;
+}
+
+.error {
+  color: #d9534f;
+  font-weight: bold;
+}
+
+
+
+.prediction-info {
+  margin: 20px 0;
+  padding: 15px;
+  background-color: #e6f7ff;
+  border: 1px solid #91d5ff;
+  border-radius: 8px;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #0050b3;
+}
