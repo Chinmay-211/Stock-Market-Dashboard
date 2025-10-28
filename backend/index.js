@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const yahooFinance = require('yahoo-finance2').default;
 const ss = require('simple-statistics'); 
+const path = require('path');
 
 const app = express();
 const PORT = 5000;
@@ -99,6 +100,14 @@ app.get('/api/stock/:companyName', async (req, res) => {
         console.error('Yahoo Finance API error:', error.message);
         res.status(500).json({ error: "Could not fetch stock data" });
     }
+});
+
+
+// --- Serve React Frontend ---
+app.use(express.static(path.join(__dirname, 'build')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 module.exports = app;
