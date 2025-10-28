@@ -100,7 +100,5 @@ app.get('/api/stock/:companyName', async (req, res) => {
         res.status(500).json({ error: "Could not fetch stock data" });
     }
 });
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
-});
+
 module.exports = app;
