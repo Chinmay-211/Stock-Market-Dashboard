@@ -2,9 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const API_URL =
-  process.env.REACT_APP_API_URL ||
-  'https://stock-dashboard-backend-2v9jkpqal-chinmay-211s-projects.vercel.app';
+const API_URL ="https://stock-market-dashboard-backend-omega.vercel.app"
 
 
 const CompanyList = ({ onSelectCompany }) => {

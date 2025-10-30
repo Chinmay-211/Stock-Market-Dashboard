@@ -8,10 +8,7 @@ import {
   LineElement, Title, Tooltip, Legend
 } from 'chart.js';
 
-const API_URL =
-  process.env.REACT_APP_API_URL ||
-  'https://stock-dashboard-backend-2v9jkpqal-chinmay-211s-projects.vercel.app';
-
+const API_URL ="https://stock-market-dashboard-backend-omega.vercel.app"
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
