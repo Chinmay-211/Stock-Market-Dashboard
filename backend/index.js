@@ -10,7 +10,7 @@ const app = express();
 // In a real-world scenario, you MUST replace the origin: '*' with your specific frontend URL 
 // (e.g., origin: 'https://my-stock-frontend.vercel.app'). 
 // Using '*' here allows all domains during initial testing.
-const frontendURL = 
+// const frontendURL = 
 app.use(cors({
     origin: '*',
     methods: ['GET', 'POST'],
