@@ -1,15 +1,23 @@
-
 const express = require('express');
 const cors = require('cors');
 const yahooFinance = require('yahoo-finance2').default;
 const ss = require('simple-statistics'); 
-const path = require('path');
+const path = require('path'); // Not strictly needed for Vercel API, but kept for completeness
 
 const app = express();
-const PORT = 5000;
 
-app.use(cors());
+// --- CRITICAL FOR SEPARATE DEPLOYMENT: CORS Configuration ---
+// In a real-world scenario, you MUST replace the origin: '*' with your specific frontend URL 
+// (e.g., origin: 'https://my-stock-frontend.vercel.app'). 
+// Using '*' here allows all domains during initial testing.
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST'],
+    credentials: true
+}));
+
 app.use(express.json());
+
 const COMPANIES = {
     "Apple": "AAPL",
     "Microsoft": "MSFT",
@@ -28,7 +36,8 @@ const calculateSMA = (data, window) => {
     let sma = [];
     for (let i = 0; i <= data.length - window; i++) {
         const chunk = data.slice(i, i + window);
-        const sum = chunk.reduce((acc, val) => acc + val.close, 0);
+        // Ensure only numbers are being summed
+        const sum = chunk.reduce((acc, val) => acc + (val.close || 0), 0);
         sma.push({ date: data[i + window - 1].date, value: sum / window });
     }
     // Pad with nulls at the beginning to align with the original data
@@ -53,11 +62,13 @@ const getPrediction = (data) => {
 
 
 app.get('/api/companies', (req, res) => {
+    // This endpoint works as /api/companies on Vercel
     res.json({ companies: Object.keys(COMPANIES) });
 });
 
 
 app.get('/api/stock/:companyName', async (req, res) => {
+    // This endpoint works as /api/stock/:companyName on Vercel
     const { companyName } = req.params;
     const tickerSymbol = COMPANIES[companyName];
 
@@ -76,20 +87,24 @@ app.get('/api/stock/:companyName', async (req, res) => {
             interval: '1d'
         });
 
-       
-        // If the API returns no historical data, send an error instead of crashing.
+        
         if (!historicalData || historicalData.length === 0) {
             console.error(`No historical data found for ${tickerSymbol}`);
             return res.status(500).json({ error: `Could not fetch historical data for ${tickerSymbol}` });
         }
         
+        // Fetch quote data
         const quote = await yahooFinance.quote(tickerSymbol);
         
+        // Calculations
         const sma50 = calculateSMA(historicalData, 50);
         const prediction = getPrediction(historicalData);
 
         res.json({
-            historical: historicalData,
+            historical: historicalData.map(d => ({
+                date: d.date, // Use Date object or convert to string if preferred
+                close: d.close,
+            })),
             fiftyTwoWeekHigh: quote?.fiftyTwoWeekHigh,
             fiftyTwoWeekLow: quote?.fiftyTwoWeekLow,
             averageVolume: quote?.averageDailyVolume3Month,
@@ -98,9 +113,10 @@ app.get('/api/stock/:companyName', async (req, res) => {
         });
     } catch (error) {
         console.error('Yahoo Finance API error:', error.message);
+        // It's crucial to set the status code for API errors
         res.status(500).json({ error: "Could not fetch stock data" });
     }
 });
 
-
+// Vercel Serverless Function requirement: Export the Express app
 module.exports = app;
